@@ -1,0 +1,5 @@
+popsize  1000
+mutrate  1e-08
+seqlength 2.5e05
+sampsize  100
+sampfreq 100
