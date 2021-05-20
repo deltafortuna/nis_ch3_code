@@ -10,5 +10,7 @@ extern double mutrate;
 extern int seqlength;
 extern int sampsize;
 extern int sampfreq;
+extern bool useMS;
+extern string mscommand;
 
 #endif

@@ -1,54 +1,39 @@
 #include "params.h"  // access to declarations of global parameter values
 
-// returns value of type int for requested parameter key
-int getParameter_int(const string &parameters_fn, const string &key)
+map<string, string> read_parameters_file(const string &parameters_fn)
 {
-	string item;
-	ifstream paramfile;
-	int to_return;
-	paramfile.open(parameters_fn.c_str());
-
-	while (paramfile >> item)
-	{
-	    if (item == key) {
-	    	paramfile >> item;
-	    	paramfile.close();
-				to_return = atoi(item.c_str());
-	 //   	return(atoi(item.c_str()));
-	    } else
-	    	paramfile >> item; // read value, which is ignored
+	//map<int, map<string, string> > params_by_block;
+	map<string,string> params;
+	ifstream paramfile(parameters_fn.c_str());
+	string line;
+	while(getline(paramfile, line)) {
+		istringstream iss(line.c_str());
+		string key, nextone, value;
+		iss >> key;
+		while (iss >> nextone)
+			value += nextone + " ";
+		params[key] = value;
 	}
-	paramfile.close();
-	return(to_return); 
+	return params;
 }
 
-// returns value of type double for requested parameter key
-double getParameter_double(const string &parameters_fn, const string &key)
-{
-	string item;
-	ifstream paramfile;
-	double to_return;
-	paramfile.open(parameters_fn.c_str());
-	// Read in a line
-	while (paramfile >> item)
-	{
-	    if (item == key) {
-	    	paramfile >> item;
-	    	paramfile.close();
-				to_return = atof(item.c_str());
-	    	//return (atof(item.c_str()));
-	    } else
-	    	paramfile >> item; // read value, which is ignored
-	}
-	paramfile.close();
-	return(to_return);
+map<string, string> parameters = read_parameters_file("parameters");
+
+// variable names
+int popsize, sampsize, seqlength, sampfreq;
+double mutrate;
+bool useMS;
+string mscommand;
+
+int process_parameters() {
+	popsize = atoi(parameters["popsize"].c_str());
+  mutrate = atof(parameters["mutrate"].c_str());
+	sampsize = atoi(parameters["sampsize"].c_str());
+	seqlength = atof(parameters["seqlength"].c_str()); // covernsion using atof() enables use of e notation in parameters file
+	sampfreq = atoi(parameters["sampfreq"].c_str());
+  useMS = atoi(parameters["useMS"].c_str());
+  mscommand = parameters["mscommand"];
+	return 1;
 }
 
-string parameters_fn("parameters"); // the name of parameters file
-
-// read in the parameter values from the parameters file
-int popsize = getParameter_int (parameters_fn, "popsize");
-double mutrate = getParameter_double (parameters_fn, "mutrate");
-int sampsize = getParameter_int (parameters_fn, "sampsize");
-int seqlength = getParameter_double (parameters_fn, "seqlength");
-int sampfreq = getParameter_int (parameters_fn, "sampfreq");
+int good_parameters = process_parameters();

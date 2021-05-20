@@ -1,5 +1,7 @@
-popsize  1000
+popsize  10000
 mutrate  1e-08
 seqlength 2.5e05
 sampsize  100
 sampfreq 100
+useMS 1
+mscommand ./ms 20000 1 -t 100 >ms_output

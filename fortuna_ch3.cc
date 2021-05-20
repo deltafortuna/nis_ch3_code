@@ -8,6 +8,8 @@
 #include <fstream>
 #include <vector>
 #include <map>
+#include <sstream>
+#include <regex>
 
 using namespace std;
 
@@ -25,8 +27,11 @@ int main(int argc, char *argv[]) {
 	Population pop;
 
 	// simulate for gens generations
-	for (int i =0; i < gens; i++)
+	for (int i =0; i < gens; i++) {
 		pop.reproduce(i);
+		if (i % 100 == 0)
+			cout << "gen " << i << endl;
+	}
 	pop.close_output_files();
 
 	return 0;
